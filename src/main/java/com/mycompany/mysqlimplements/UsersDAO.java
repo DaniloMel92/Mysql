@@ -1,4 +1,4 @@
-package com.cadastro.usuarios;
+package com.mycompany.mysqlimplements;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

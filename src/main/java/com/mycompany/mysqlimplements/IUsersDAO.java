@@ -1,4 +1,4 @@
-package com.cadastro.usuarios;
+package com.mycompany.mysqlimplements;
 
 public interface IUsersDAO {
     public void insertUsers();

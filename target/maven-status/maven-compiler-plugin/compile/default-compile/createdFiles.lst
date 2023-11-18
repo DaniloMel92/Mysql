@@ -1,0 +1,5 @@
+com/mycompany/mysqlimplements/Model.class
+com/mycompany/mysqlimplements/Connect.class
+com/mycompany/mysqlimplements/ToConnectWithMysqlToRegisterNewsUsers.class
+com/mycompany/mysqlimplements/IUsersDAO.class
+com/mycompany/mysqlimplements/UsersDAO.class
