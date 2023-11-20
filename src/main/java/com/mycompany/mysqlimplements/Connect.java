@@ -11,7 +11,7 @@ private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 private static final String URL = "jdbc:mysql://localhost:3306/usuarios";
 private static final String USER = "root";
 private static final String PASS = "";
-public static Connection getConnection(){
+public static Connection connection(){
     try {
         Class.forName(DRIVER);
            

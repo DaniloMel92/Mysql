@@ -9,48 +9,38 @@ public class UsersDAO implements IUsersDAO{
 Model model;
     public UsersDAO() {
         model = new Model();
+        
     }
 public void createTable()throws SQLException{
-    Connection con = Connect.getConnection();
-    PreparedStatement stmt =con.prepareStatement("create table if not exists users(email varchar(30),pass varchar(15))");
+    Connection con = Connect.connection();
+    PreparedStatement stmt =con.prepareStatement("create table if not exists users(email varchar(100),pass varchar(30))");
     stmt.execute();
-    Connect.closeConnection(con, stmt);
+   Connect.closeConnection(con, stmt);
 }
     @Override
     public void insertUsers() {
-    String email = "danilokelvemeireles45@gmail.com";
-    String pass = "danilo92";
+    model.insertEmailAndPassword();
+     Connection con = Connect.connection();
         try {
-            Connection con = Connect.getConnection();
-            PreparedStatement stmt = con.prepareStatement("insert into users (email,pass) VALUES(?,?)");
-            ResultSet rs = stmt.executeQuery("select email from users");
-            while(rs.next()){
-            if (email!=rs.getString("email")){
-                stmt.setString(1,email);
-                stmt.setString(2,pass);
+            PreparedStatement stmt = con.prepareStatement("insert into users (email,pass) VALUES(?,?);");
+                stmt.setString(1,model.getEmail());
+                stmt.setString(2,model.getPassword());
              int rowsafecfed = stmt.executeUpdate();
-             
              if (rowsafecfed > 0){
              System.out.println("User has been insert with success ");
-             
          }else{
              System.out.println("error, user not inserted");
             }
-            }else{
-                System.out.println("User already registered");
-            }
-         }stmt.close();
+         stmt.close();
          con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 }
-
     @Override
     public void findUsers() {
-
+ Connection con = Connect.connection();
         try {
-            Connection con = Connect.getConnection();
             PreparedStatement stmt = con.prepareStatement("select * from users");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
@@ -66,8 +56,8 @@ public void createTable()throws SQLException{
     }
     @Override
     public void status() {
+         Connection con = Connect.connection();
         try {
-            Connection con = Connect.getConnection();
             if (con==null){
                 System.out.println("error in connection");
             } else {
