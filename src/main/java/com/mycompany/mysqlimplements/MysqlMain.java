@@ -2,9 +2,8 @@ package com.mycompany.mysqlimplements;
 
 import java.sql.SQLException;
 
-public class ToConnectWithMysqlToRegisterNewsUsers {
+public class MysqlMain {
     public static void main(String[] args) throws SQLException {
-        UsersDAO usersDAO = new UsersDAO();
-     usersDAO.findUsers();
+     UsersCrud.chooseOperation();   
     }
 }
