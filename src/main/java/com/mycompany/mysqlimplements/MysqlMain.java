@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 public class MysqlMain {
     public static void main(String[] args) throws SQLException {
-     UsersCrud.chooseOperation();   
+        UsersCrud usersCrud = new UsersCrud();
+        usersCrud.chooseOperation();
     }
 }
