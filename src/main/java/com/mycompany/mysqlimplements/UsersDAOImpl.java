@@ -60,21 +60,11 @@ public class UsersDAOImpl implements UsersDAO {
     @Override
     public void deleteUsers(Model model) {
         Connection con = Connect.connection();
-        String email = "";
         try {
             PreparedStatement stmt = con.prepareStatement("delete from users where email=?");
-            ResultSet rs = stmt.executeQuery("select email from users");
-            while (rs.next()) {
-                email = rs.getString("email");
-            }
-            if (email.equals(model.getEmail())) {
-                stmt.setString(1, model.getEmail());
-                stmt.execute();
-                System.out.println("The user has been deleted");
-            } else {
-                System.out.println("The user not exist in the database");
-            }
-            rs.close();
+            stmt.setString(1, model.getEmail());
+            stmt.execute();
+            System.out.println("The user has been deleted");
             stmt.close();
             con.close();
         } catch (Exception e) {
@@ -100,43 +90,34 @@ public class UsersDAOImpl implements UsersDAO {
     @Override
     public void updateUsers(Model model) {
         Connection con = Connect.connection();
-        String email = "";
         try {
             PreparedStatement stmt = con.prepareStatement("update users set pass=? where email=?");
-            ResultSet rs = stmt.executeQuery("select email from users");
-            while (rs.next()) {
-                email = rs.getString("email");
-            }
-            if (email.equals(model.getEmail())) {
-                stmt.setString(1, model.getPassword());
-                stmt.setString(2, model.getEmail());
-                stmt.executeUpdate();
-                System.out.println("The user has been updated");
-            } else {
-                System.out.println("The user not exist in the database");
-            }
+            stmt.setString(1, model.getPassword());
+            stmt.setString(2, model.getEmail());
+            stmt.executeUpdate();
+            System.out.println("The user has been updated");
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
     }
+
     @Override
-    public String searchUser(Model model){
-   Connection con = Connect.connection();
-   String email = "";
+    public String searchUser(Model model) {
+        Connection con = Connect.connection();
         try {
             PreparedStatement stmt = con.prepareStatement("select email from users");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                email = rs.getString("email");
-            }
-            if(model.getEmail().equals(email)){
-                return model.getEmail();
-            }
-           
+                String email = rs.getString("email");
+                if (model.getEmail().equals(email)) {
+                    return email;
+                }
 
-            }catch(Exception e){
-            System.out.println(e.getMessage());
             }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return null;
-}
+    }
 }

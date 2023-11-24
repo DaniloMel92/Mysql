@@ -4,9 +4,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UsersCrud {
-    static UsersDAO dao = new UsersDAOImpl();
+    UsersDAO dao = new UsersDAOImpl();
     Model model;
-
     public UsersCrud() {
         this.model = new Model();
     }
@@ -39,8 +38,16 @@ public class UsersCrud {
                     update();
                     break;
             }
-            System.out.println("Wish to continue: ");
+            System.out.println("Wish to continue [y/n]: ");
             resp = s.next();
+            while (!resp.equals("y") && !resp.equals("n")) {
+                System.out.println("you must to enter y to continue or n to exit");
+                resp = s.next();
+                if (resp.equals("n")) {
+                    break;
+                }
+            }
+
         }
     }
 
@@ -48,9 +55,14 @@ public class UsersCrud {
         Scanner s = new Scanner(System.in);
         System.out.println("Enter the e-mail: ");
         model.setEmail(s.nextLine());
+        String email = dao.searchUser(model);
+        if(!model.getEmail().equals(email)){
         System.out.println("Enter the password: ");
         model.setPassword(s.nextLine());
         dao.insertUsers(model);
+        }else{
+            System.out.println("User already registered");
+        }
     }
 
     public void findUsers() {
@@ -65,7 +77,12 @@ public class UsersCrud {
         Scanner s = new Scanner(System.in);
         System.out.println("Enter the email of the user that will be deleted");
         model.setEmail(s.nextLine());
-        dao.deleteUsers(model);
+        String email = dao.searchUser(model);
+        if (model.getEmail().equals(email)) {
+            dao.deleteUsers(model);
+        } else {
+            System.out.println("User not found in the database");
+        }
     }
 
     public void update() {
@@ -73,12 +90,12 @@ public class UsersCrud {
         System.out.println("Enter the email of the user that will be updated");
         model.setEmail(s.nextLine());
         String email = dao.searchUser(model);
-        if(model.getEmail().equals(email)){
-        System.out.println("Enter your new password: ");
-        model.setPassword(s.nextLine());
-        dao.updateUsers(model);
-    }else{
-        System.out.println("User not found in the database");
+        if (model.getEmail().equals(email)) {
+            System.out.println("Enter your new password: ");
+            model.setPassword(s.nextLine());
+            dao.updateUsers(model);
+        } else {
+            System.out.println("User not found in the database");
+        }
     }
-}
 }
