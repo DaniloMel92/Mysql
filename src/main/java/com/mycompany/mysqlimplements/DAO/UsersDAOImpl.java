@@ -1,9 +1,12 @@
-package com.mycompany.mysqlimplements;
+package com.mycompany.mysqlimplements.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mycompany.mysqlimplements.Connection.Connect;
+import com.mycompany.mysqlimplements.Model.Model;
 
 public class UsersDAOImpl implements UsersDAO {
     Model model;

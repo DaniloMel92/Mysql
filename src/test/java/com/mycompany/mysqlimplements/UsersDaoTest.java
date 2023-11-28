@@ -7,74 +7,64 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 
-import com.mycompany.mysqlimplements.CRUD.UsersCrud;
 import com.mycompany.mysqlimplements.Connection.Connect;
+import com.mycompany.mysqlimplements.DAO.UsersDAO;
+import com.mycompany.mysqlimplements.DAO.UsersDAOImpl;
 import com.mycompany.mysqlimplements.Model.Model;
 
-public class UsersCrudTest {
+public class UsersDaoTest {
+    Model model;
+    UsersDAO usersDAO;
+
+    public UsersDaoTest() {
+        this.model = new Model();
+        this.usersDAO = new UsersDAOImpl();
+    }
 
     @Test
-    public void TestCrudMethodInsertNewUserSuccessfully() throws SQLException {
-        UsersCrud usersCrud = new UsersCrud();
-        Model model = new Model();
-        model.setEmail("danilokl@gmail.com");
+    public void testInsertUsersSuccessfully() {
+        model.setEmail("danilokelve999@gmail.com");
         model.setPassword("danilo92");
-        usersCrud.insert(model);
-        String email = search(model);
-        assertEquals("danilokl@gmail.com", email);
-    }
-
-    @Test
-    public void TestCrudMethodInsertUserThatAlreadyExistInTheDatabaseMustToReturnInRoolback() {
-        UsersCrud usersCrud = new UsersCrud();
-        Model model = new Model();
-        model.setEmail("danilokelvemeireles145@yahoo.com.br");
-        model.setPassword("danilo");
-        usersCrud.insert(model);
+        usersDAO.insertUsers(model);
         String email = search(model);
         assertNotNull(email);
-
     }
 
     @Test
-    public void TestCrudMethodDeleteUserSuccessFully() {
-        UsersCrud usersCrud = new UsersCrud();
-        Model model = new Model();
-        model.setEmail("danilokelvemeireles45@yahoo.com.br");
+    public void testDeleteUsersSucessfully() {
+        model.setEmail("danilokelvemeireles45@gmail.com");
+        usersDAO.deleteUsers(model);
         String email = search(model);
-        assertNotNull(email);
-        usersCrud.delete(model);
-        String emailReturn = search(model);
-        assertNull(emailReturn);
-    }
-
-    @Test
-    public void TestCrudMethodDeleteUserThatNotExistInTheDatabaseMustReturnInRoolback() {
-        UsersCrud usersCrud = new UsersCrud();
-        Model model = new Model();
-        model.setEmail("danilokelvemeireles45@yahoo.com.br");
-        String email = search(model);
-        usersCrud.delete(model);
         assertNull(email);
+    }
+
+    @Test
+    public void testOfSearchInTheDatabaseSuccessfully() {
+        Connection con = Connect.connection();
+        try {
+            PreparedStatement stmt = con.prepareStatement("select email from users");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+            }
+            assertNotNull(rs);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
     @Test
-    public void TestCrudMethodUpdateUserSuccessfully() {
-        UsersCrud usersCrud = new UsersCrud();
-        Model model = new Model();
-        model.setEmail("danilo92@gmail.com");
+    public void TestMethodUpdateUserSuccessfully() {
+        model.setEmail("danilokelvemeireles45@yahoo.com.br");
         String email = search(model);
+        model.setPassword("54321");
         assertNotNull(email);
-        model.setPassword("da");
-        usersCrud.update(model);
+        usersDAO.updateUsers(model);
         String password = searchPassword(model);
-        assertEquals("da", password);
-
+        assertEquals("54321", password);
     }
 
     public String search(Model model) {

@@ -1,16 +1,16 @@
-package com.mycompany.mysqlimplements;
+package com.mycompany.mysqlimplements.CRUD;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.mycompany.mysqlimplements.DAO.UsersDAO;
+import com.mycompany.mysqlimplements.DAO.UsersDAOImpl;
+import com.mycompany.mysqlimplements.Model.Model;
+
 public class UsersCrud {
     UsersDAO dao = new UsersDAOImpl();
-    Model model;
-    public UsersCrud() {
-        this.model = new Model();
-    }
 
-    public void chooseOperation() throws SQLException {
+    public void chooseOperation(Model model) throws SQLException {
         Scanner s = new Scanner(System.in);
         String resp = "y";
         while (resp.equals("y")) {
@@ -23,7 +23,7 @@ public class UsersCrud {
             int choose = s.nextInt();
             switch (choose) {
                 case 1:
-                    insert();
+                    insert(model);
                     break;
                 case 2:
                     create();
@@ -32,10 +32,10 @@ public class UsersCrud {
                     findUsers();
                     break;
                 case 4:
-                    delete();
+                    delete(model);
                     break;
                 case 5:
-                    update();
+                    update(model);
                     break;
             }
             System.out.println("Wish to continue [y/n]: ");
@@ -46,22 +46,19 @@ public class UsersCrud {
                 if (resp.equals("n")) {
                     break;
                 }
+
             }
 
         }
+        s.close();
     }
 
-    public void insert() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Enter the e-mail: ");
-        model.setEmail(s.nextLine());
+    public void insert(Model model) {
         String email = dao.searchUser(model);
-        if(!model.getEmail().equals(email)){
-        System.out.println("Enter the password: ");
-        model.setPassword(s.nextLine());
-        dao.insertUsers(model);
-        }else{
-            System.out.println("User already registered");
+        if (email == null) {
+            dao.insertUsers(model);
+        } else {
+            System.err.println("User already inserted");
         }
     }
 
@@ -73,10 +70,7 @@ public class UsersCrud {
         dao.createTable();
     }
 
-    public void delete() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Enter the email of the user that will be deleted");
-        model.setEmail(s.nextLine());
+    public void delete(Model model) {
         String email = dao.searchUser(model);
         if (model.getEmail().equals(email)) {
             dao.deleteUsers(model);
@@ -85,14 +79,9 @@ public class UsersCrud {
         }
     }
 
-    public void update() {
-        Scanner s = new Scanner(System.in);
-        System.out.println("Enter the email of the user that will be updated");
-        model.setEmail(s.nextLine());
+    public void update(Model model) {
         String email = dao.searchUser(model);
         if (model.getEmail().equals(email)) {
-            System.out.println("Enter your new password: ");
-            model.setPassword(s.nextLine());
             dao.updateUsers(model);
         } else {
             System.out.println("User not found in the database");

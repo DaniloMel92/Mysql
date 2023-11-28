@@ -1,6 +1,8 @@
-package com.mycompany.mysqlimplements;
+package com.mycompany.mysqlimplements.DAO;
 
 import java.sql.SQLException;
+
+import com.mycompany.mysqlimplements.Model.Model;
 
 public interface UsersDAO {
     public void insertUsers(Model model);

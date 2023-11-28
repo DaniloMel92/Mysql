@@ -1,4 +1,4 @@
-package com.mycompany.mysqlimplements;
+package com.mycompany.mysqlimplements.Connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

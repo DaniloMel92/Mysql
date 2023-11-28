@@ -1,11 +1,8 @@
-package com.mycompany.mysqlimplements;
-
-import java.util.Scanner;
+package com.mycompany.mysqlimplements.Model;
 
 public class Model {
     private String email;
     private String password;
-    Scanner s = new Scanner(System.in);
 
     public String getEmail() {
         return this.email;
